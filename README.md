@@ -108,14 +108,14 @@ A proteção acontece em duas camadas:
 
 ```bash
 # clonar o repositório
-git clone https://github.com/seu-usuario/webapp-boilerplate.git
+git clone https://github.com/vitorsibin/webapp-boilerplate.git
 cd webapp-boilerplate
 
 # subir o container
 docker compose up --build
 ```
 
-A aplicação estará disponível em `http://localhost:3000`.
+A aplicação estará disponível em `http://localhost:3002`.
 
 ### Localmente sem Docker
 
@@ -172,17 +172,6 @@ Retorno:
 ```json
 { "token": "eyJhbGci..." }
 ```
-
-### Rotas protegidas (exemplo com words)
-
-Todas as rotas protegidas exigem o header `Authorization: Bearer <token>`.
-
-| Método | Rota | Descrição |
-|---|---|---|
-| GET | `/words` | Lista registros do usuário |
-| POST | `/words` | Cria novo registro |
-| DELETE | `/words/:id` | Remove um registro |
-
 ---
 
 ## Banco de dados
@@ -237,42 +226,6 @@ Adicione os `CREATE TABLE` no arquivo `src/db/migrate.ts`.
 ### 4. Personalizar o dashboard
 
 Edite o `src/public/app.html` substituindo os cards de métricas, colunas da tabela e itens da sidebar pelo conteúdo da sua aplicação.
-
-### 5. Adicionar o email ao token JWT
-
-Para exibir o email do usuário no dashboard, atualize o `src/lib/jwt.ts`:
-
-```ts
-export async function signToken(userId: string, email: string) {
-  return await new SignJWT({ userId, email })
-    .setProtectedHeader({ alg: "HS256" })
-    .setExpirationTime("7d")
-    .sign(secret);
-}
-```
-
-E passe o email ao chamar `signToken` no login.
-
----
-
-## Deploy no Debian
-
-```bash
-# instalar Docker no servidor
-curl -fsSL https://get.docker.com | sh
-
-# clonar e subir
-git clone https://github.com/seu-usuario/webapp-boilerplate.git
-cd webapp-boilerplate
-docker compose up -d --build
-```
-
-Para rodar na porta 80, altere o `docker-compose.yml`:
-
-```yaml
-ports:
-  - "80:3000"
-```
 
 ---
 
