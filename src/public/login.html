@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AppName — Entrar</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/auth.css" />
+  </head>
+  <body>
+    <main class="auth">
+      <div class="auth__card">
+        <a class="auth__logo" href="/">AppName</a>
+
+        <div class="auth__tabs">
+          <button class="auth__tab active" id="tab-login" onclick="switchTab('login')">
+            Entrar
+          </button>
+          <button class="auth__tab" id="tab-register" onclick="switchTab('register')">
+            Criar conta
+          </button>
+        </div>
+
+        <form class="auth__form" id="auth-form">
+          <div class="form__group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="seu@email.com" required />
+          </div>
+          <div class="form__group">
+            <label for="password">Senha</label>
+            <input type="password" id="password" placeholder="••••••••" required />
+          </div>
+          <p class="auth__error" id="error-msg"></p>
+          <button type="submit" class="btn-primary auth__submit" id="submit-btn">
+            Entrar
+          </button>
+        </form>
+
+        <div class="auth__footer" id="login-footer">
+          <a href="/forgot-password.html">Esqueceu a senha?</a>
+        </div>
+      </div>
+    </main>
+
+    <script src="/js/auth.js"></script>
+    <script>
+      redirectIfAuthenticated();
+
+      let currentTab = "login";
+
+      function switchTab(tab) {
+        currentTab = tab;
+        const isLogin = tab === "login";
+
+        document.getElementById("tab-login").classList.toggle("active", isLogin);
+        document.getElementById("tab-register").classList.toggle("active", !isLogin);
+        document.getElementById("submit-btn").textContent = isLogin ? "Entrar" : "Criar conta";
+        document.getElementById("login-footer").style.display = isLogin ? "block" : "none";
+        document.getElementById("error-msg").textContent = "";
+      }
+
+      document.getElementById("auth-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const errorMsg = document.getElementById("error-msg");
+
+        try {
+          if (currentTab === "login") {
+            await login(email, password);
+          } else {
+            await register(email, password);
+          }
+        } catch (err) {
+          errorMsg.textContent = err.message;
+        }
+      });
+    </script>
+  </body>
+</html>

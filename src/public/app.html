@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AppName — Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/app.css" />
+  </head>
+  <body>
+    <div class="layout">
+
+      <aside class="sidebar">
+        <span class="sidebar__logo">AppName</span>
+        <nav class="sidebar__nav">
+          <a href="/app.html" class="active">Dashboard</a>
+          <a href="#">Seção 1</a>
+          <a href="#">Seção 2</a>
+          <a href="#">Configurações</a>
+        </nav>
+        <div class="sidebar__footer">
+          <p class="sidebar__user" id="user-email"></p>
+          <button class="btn-outline" style="width:100%" onclick="logout()">
+            Sair
+          </button>
+        </div>
+      </aside>
+
+      <div class="main">
+        <header class="topbar">
+          <span class="topbar__title">Dashboard</span>
+        </header>
+
+        <div class="content">
+          <div class="cards">
+            <div class="card">
+              <p class="card__label">Métrica 1</p>
+              <p class="card__value">—</p>
+            </div>
+            <div class="card">
+              <p class="card__label">Métrica 2</p>
+              <p class="card__value">—</p>
+            </div>
+            <div class="card">
+              <p class="card__label">Métrica 3</p>
+              <p class="card__value">—</p>
+            </div>
+          </div>
+
+          <p class="section__title">Registros recentes</p>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Coluna 1</th>
+                  <th>Coluna 2</th>
+                  <th>Coluna 3</th>
+                  <th>Data</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+                <tr>
+                  <td colspan="4" style="text-align:center; color: var(--text-light);">
+                    Nenhum registro encontrado
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script>
+      redirectIfNotAuthenticated();
+
+      // exibe o email do usuario decodificando o token JWT
+      function parseToken(token) {
+        try {
+          return JSON.parse(atob(token.split(".")[1]));
+        } catch {
+          return null;
+        }
+      }
+
+      const token = getToken();
+      const payload = parseToken(token);
+      if (payload) {
+        document.getElementById("user-email").textContent = payload.email ?? "Usuário";
+      }
+    </script>
+  </body>
+</html>
