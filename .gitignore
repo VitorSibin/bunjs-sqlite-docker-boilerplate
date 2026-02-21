@@ -2,7 +2,8 @@
 node_modules
 
 # database
-data/*.db
+data/*
+!data/.gitkeep
 
 # output
 out
